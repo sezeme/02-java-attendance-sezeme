@@ -4,7 +4,7 @@ package attendance.domain;
 import attendance.service.utli.Formatter;
 import attendance.service.utli.InputValidator;
 
-import java.io.Serializable;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -18,6 +18,7 @@ public class Attendance implements Comparable<Attendance> {
 
     public Attendance(String nickname, LocalDate date, LocalTime time) {
         InputValidator.checkIsOpened(date);
+        InputValidator.checkIsFuture(date);
         this.nickname = nickname;
         this.date = date;
         this.time = time;
@@ -25,10 +26,7 @@ public class Attendance implements Comparable<Attendance> {
     }
 
     private AttendanceState determineAttendanceState() {
-        LocalTime startTime = switch (date.getDayOfWeek()){
-            case MONDAY -> LocalTime.of(13, 0);
-            default -> LocalTime.of(10,0);
-        };
+        LocalTime startTime = date.getDayOfWeek() == DayOfWeek.MONDAY ? LocalTime.of(13, 0): LocalTime.of(10,0);
 
         if (time == null) {
             return AttendanceState.결석;

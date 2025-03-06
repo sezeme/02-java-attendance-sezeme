@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class AttendanceLog {
+public class AttendanceLog implements Comparable<AttendanceLog> {
     int attendCnt;
     int lateCnt;
     int absentCnt;
@@ -24,9 +24,13 @@ public class AttendanceLog {
         calcManageState();
     }
 
+    public ManageState getManageState() {
+        return manageState;
+    }
+
     private List<Attendance> fillAllDates(List<Attendance> existingAttendances) {
         LocalDate startDate = LocalDate.of(2025, 2, 20);
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now().minusDays(1);
         Set<LocalDate> existingDates = existingAttendances.stream()
                 .map(Attendance::getDate)
                 .collect(Collectors.toSet());
@@ -101,6 +105,27 @@ public class AttendanceLog {
         }
 
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(name + ": 결석 " + absentCnt + "회, " + "지각 " + lateCnt + "회, ");
+        switch (manageState) {
+            case 면담 -> sb.append("(면담)");
+            case 경고 -> sb.append("(경고)");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public int compareTo(AttendanceLog o) {
+        if(manageState.ordinal() == o.manageState.ordinal()){
+            if((absentCnt + lateCnt) == (o.absentCnt + o.lateCnt)){
+                return name.compareTo(o.name);
+            }
+            return (o.absentCnt + o.lateCnt) - (absentCnt + lateCnt);
+        }
+        return Integer.compare(manageState.ordinal(), o.manageState.ordinal());
     }
 }
 

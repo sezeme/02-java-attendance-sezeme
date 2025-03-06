@@ -2,6 +2,7 @@ package attendance.service;
 
 import attendance.domain.Attendance;
 import attendance.domain.AttendanceLog;
+import attendance.persistence.AttendanceLogRepository;
 import attendance.persistence.AttendanceRepository;
 import attendance.persistence.FileAttendanceStorage;
 import attendance.service.utli.Formatter;
@@ -13,6 +14,7 @@ import attendance.ui.outputView.AttendanceUpdatePrinter;
 import attendance.ui.outputView.MainPrinter;
 
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -48,8 +50,11 @@ public class AttendanceProgram {
                     }
                     default -> System.out.println("[ERROR] 잘못된 입력입니다. 다시 선택해주세요.");
                 }
-            } catch (Exception e) {
+            } catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException | DateTimeException e) {
+                System.out.println("[ERROR] 잘못된 형식을 입력하였습니다.");
+            }catch (Exception e) {
                 System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -91,7 +96,7 @@ public class AttendanceProgram {
     }
 
     private void checkHasExpulsionRisk() {
-
+        mainPrinter.displayAttandence(attendanceLogService.getInformationOfRiskOfWeeding());
     }
 
 

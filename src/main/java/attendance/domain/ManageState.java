@@ -1,5 +1,5 @@
 package attendance.domain;
 
 public enum ManageState {
-    경고, 면담, 제적
+    제적, 면담, 경고
 }
