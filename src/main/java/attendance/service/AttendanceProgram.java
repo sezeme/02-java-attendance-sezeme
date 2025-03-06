@@ -1,10 +1,13 @@
 package attendance.service;
 
 import attendance.domain.Attendance;
+import attendance.domain.AttendanceLog;
 import attendance.persistence.AttendanceRepository;
 import attendance.persistence.FileAttendanceStorage;
+import attendance.service.utli.Formatter;
 import attendance.service.utli.ValidChecker;
 import attendance.ui.InputView;
+import attendance.ui.outputView.AttendancePrinter;
 import attendance.ui.outputView.AttendanceRegiserPrinter;
 import attendance.ui.outputView.AttendanceUpdatePrinter;
 import attendance.ui.outputView.MainPrinter;
@@ -15,19 +18,22 @@ import java.time.LocalTime;
 
 public class AttendanceProgram {
     private final AttendanceService attendanceService;
+    private final AttendanceLogService attendanceLogService;
     private final MainPrinter mainPrinter;
     private final InputView inputView;
 
     public AttendanceProgram(MainPrinter mainPrinter, InputView inputView) {
         AttendanceRepository attendanceRepository = new AttendanceRepository(new FileAttendanceStorage());
         this.attendanceService = new AttendanceService(attendanceRepository);
+        AttendanceLogRepository attendanceLogRepository = new AttendanceLogRepository(attendanceService.findAttendance());
+        this.attendanceLogService = new AttendanceLogService(attendanceLogRepository);
         this.mainPrinter = mainPrinter;
         this.inputView = inputView;
     }
 
     public void run() {
         while (true) {
-            mainPrinter.displayMenu();
+            mainPrinter.displayMenu(Formatter.getDate(LocalDate.now()));
 
             try {
                 char choice = inputView.getChoice();
@@ -59,7 +65,7 @@ public class AttendanceProgram {
         printer.displayToGetAttendanceTime();
         Attendance attendance = new Attendance(name, LocalDate.now(), inputView.getAttendanceTime());
         attendanceService.registerAttendance(attendance);
-        mainPrinter.displayAttandence(attendance.getInformation());
+        mainPrinter.displayAttandence(attendance.toString());
     }
 
     private void updateAttendance() throws IOException {
@@ -73,13 +79,18 @@ public class AttendanceProgram {
         Attendance attendance = new Attendance(name, date, time);
         Attendance oldAttendance = attendanceService.modifyAttendance(attendance);
 
-        mainPrinter.displayAttandence(oldAttendance.getInformation() + " -> " + attendance.getInformation() + " 수정 완료!");
+        mainPrinter.displayAttandence(oldAttendance + " -> " + attendance + " 수정 완료!");
+    }
+
+    private void checkAttendanceLogByCrew() throws IOException {
+        AttendancePrinter printer = new AttendancePrinter();
+        printer.displayToGetName();
+        String name = inputView.getNickName();
+        AttendanceLog log = new AttendanceLog(attendanceService.findAttendanceByName(name));
+        mainPrinter.displayAttandence(log.getInformation());
     }
 
     private void checkHasExpulsionRisk() {
-    }
-
-    private void checkAttendanceLogByCrew() {
 
     }
 

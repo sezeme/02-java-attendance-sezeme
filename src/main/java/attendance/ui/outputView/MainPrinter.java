@@ -3,9 +3,9 @@ package attendance.ui.outputView;
 import java.time.LocalDate;
 
 public class MainPrinter {
-    public void displayMenu() {
+    public void displayMenu(String date) {
         System.out.println(
-                "오늘은 "+ LocalDate.now() +"입니다. 기능을 선택해 주세요.\n" +
+                "오늘은 "+ date +"입니다. 기능을 선택해 주세요.\n" +
                         "1. 출석 확인\n" +
                         "2. 출석 수정\n" +
                         "3. 크루별 출석 기록 확인\n" +

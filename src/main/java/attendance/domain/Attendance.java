@@ -2,19 +2,22 @@ package attendance.domain;
 
 
 import attendance.service.utli.Formatter;
+import attendance.service.utli.InputValidator;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-public class Attendance {
+public class Attendance implements Comparable<Attendance> {
     private final String nickname;
     private final LocalDate date;
-    private LocalTime time;
-    private AttendanceState state;
+    private final LocalTime time;
+
+    private final AttendanceState state;
 
     public Attendance(String nickname, LocalDate date, LocalTime time) {
+        InputValidator.checkIsOpened(date);
         this.nickname = nickname;
         this.date = date;
         this.time = time;
@@ -49,12 +52,12 @@ public class Attendance {
         return time;
     }
 
-    public boolean hasRegisteredDate(Attendance a) {
-        return nickname.equals(a.getNickname()) && date.equals(a.getDate());
+    public AttendanceState getState() {
+        return state;
     }
 
-    public String getInformation() {
-        return Formatter.getDate(date) + " " + Formatter.getTime(time) + " (" + state + ")";
+    public boolean hasRegisteredDate(Attendance a) {
+        return nickname.equals(a.getNickname()) && date.equals(a.getDate());
     }
 
     @Override
@@ -66,12 +69,17 @@ public class Attendance {
     }
 
     @Override
+    public String toString() {
+        return Formatter.getDate(date) + " " + Formatter.getTime(time) + " (" + state + ")";
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(nickname, date, time);
     }
 
     @Override
-    public String toString() {
-        return nickname + "," + date + " " + time;
+    public int compareTo(Attendance o) {
+        return date.compareTo(o.getDate());
     }
 }

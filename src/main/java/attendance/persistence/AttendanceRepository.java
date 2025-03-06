@@ -22,10 +22,6 @@ public class AttendanceRepository {
         return attendanceList.stream().filter(user -> user.getNickname().equals(name)).toList();
     }
 
-    public Attendance selectAttendanceByCrewByTime(Attendance attendance) {
-        return attendanceList.stream().filter(user -> user.equals(attendance)).findFirst().orElse(null);
-    }
-
     public void insertAttendance(Attendance attendance) {
         attendanceList.add(attendance);
         attendanceStorage.saveAttendance(attendanceList);
