@@ -9,14 +9,27 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 public class Attendance {
-    private String nickname;
-    private LocalDate date;
+    private final String nickname;
+    private final LocalDate date;
     private LocalTime time;
+    private AttendanceState state;
 
     public Attendance(String nickname, LocalDate date, LocalTime time) {
         this.nickname = nickname;
         this.date = date;
         this.time = time;
+        this.state = determineAttendanceState();
+    }
+
+    private AttendanceState determineAttendanceState() {
+        if (time == null) {
+            return AttendanceState.결석;
+        } else if (time.isAfter(LocalTime.of(8,0)) && time.isBefore(LocalTime.of(10, 6))) {
+            return AttendanceState.출석;
+        } else if (time.isAfter(LocalTime.of(10,5)) && time.isBefore(LocalTime.of(10, 31))) {
+            return AttendanceState.지각;
+        }
+        return AttendanceState.결석;
     }
 
     public String getNickname() {
@@ -36,7 +49,7 @@ public class Attendance {
     }
 
     public String getInformation() {
-        return Formatter.getDate(date) + " " + Formatter.getTime(time);
+        return Formatter.getDate(date) + " " + Formatter.getTime(time) + " (" + state + ")";
     }
 
     @Override
