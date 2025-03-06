@@ -54,7 +54,6 @@ public class AttendanceProgram {
                 System.out.println("[ERROR] 잘못된 형식을 입력하였습니다.");
             }catch (Exception e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
             }
         }
     }
