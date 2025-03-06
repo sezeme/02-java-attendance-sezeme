@@ -28,12 +28,9 @@ public class AttendanceService {
         attendanceRepository.insertAttendance(attendance);
     }
 
-    public void modifyAttendance(Attendance updateAttendance) {
-        Attendance existingAttendance = attendanceRepository.selectAttendanceByCrewByTime(updateAttendance);
-        if (existingAttendance == null) {
-            throw new IllegalArgumentException("[ERROR] 등록되지 않은 닉네임입니다.");
-        }
-
-        attendanceRepository.updateAttendance(updateAttendance);
+    public Attendance modifyAttendance(Attendance updateAttendance) {
+        Attendance attendance = attendanceRepository.updateAttendance(updateAttendance);
+        ValidChecker.isRegistered(attendance == null);
+        return attendance;
     }
 }

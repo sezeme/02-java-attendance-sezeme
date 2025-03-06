@@ -6,6 +6,7 @@ import attendance.persistence.FileAttendanceStorage;
 import attendance.ui.InputView;
 import attendance.ui.outputView.AttendancePrinter;
 import attendance.ui.outputView.AttendanceRegiserPrinter;
+import attendance.ui.outputView.AttendanceUpdatePrinter;
 import attendance.ui.outputView.MainPrinter;
 
 import java.io.IOException;
@@ -17,14 +18,12 @@ public class AttendanceProgram {
     private final AttendanceService attendanceService;
     private final MainPrinter mainPrinter;
     private final InputView inputView;
-    AttendancePrinter printer;
 
     public AttendanceProgram(MainPrinter mainPrinter, InputView inputView) {
         AttendanceRepository attendanceRepository = new AttendanceRepository(new FileAttendanceStorage());
         this.attendanceService = new AttendanceService(attendanceRepository);
         this.mainPrinter = mainPrinter;
         this.inputView = inputView;
-        this.printer = null;
     }
 
     public void run() {
@@ -51,7 +50,7 @@ public class AttendanceProgram {
     }
 
     private void registerAttendance() throws IOException {
-        printer = new AttendanceRegiserPrinter();
+        AttendanceRegiserPrinter printer = new AttendanceRegiserPrinter();
         printer.displayToGetName();
         String name = inputView.getNickName();
 
@@ -64,15 +63,25 @@ public class AttendanceProgram {
         mainPrinter.displayAttandence(attendance.getInformation());
     }
 
+    private void updateAttendance() throws IOException {
+        AttendanceUpdatePrinter printer = new AttendanceUpdatePrinter();
+        printer.displayToGetName();
+        String name = inputView.getNickName();
+        printer.displayToGetAttendanceDate();
+        LocalDate date = inputView.getDateOfMonth();
+        printer.displayToGetAttendanceTime();
+        LocalTime time = inputView.getAttendanceTime();
+        Attendance attendance = new Attendance(name, date, time);
+        Attendance oldAttendance = attendanceService.modifyAttendance(attendance);
+
+        mainPrinter.displayAttandence(oldAttendance.getInformation() + " -> " + attendance.getInformation() + " 수정 완료!");
+    }
+
     private void checkHasExpulsionRisk() {
     }
 
     private void checkAttendanceLogByCrew() {
-        
-    }
 
-    private void updateAttendance() {
-        
     }
 
 

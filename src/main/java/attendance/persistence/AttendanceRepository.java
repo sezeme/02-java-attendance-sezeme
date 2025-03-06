@@ -31,14 +31,17 @@ public class AttendanceRepository {
         attendanceStorage.saveAttendance(attendanceList);
     }
 
-    public void updateAttendance(Attendance updateAttendance) {
+    public Attendance updateAttendance(Attendance updateAttendance) {
+        Attendance oldAttendance = null;
         for (int i = 0; i < attendanceList.size(); i++) {
-            if (attendanceList.get(i).getNickname().equals(updateAttendance.getNickname())) {
+            if(updateAttendance.equals(attendanceList.get(i))) {
+                oldAttendance = attendanceList.get(i);
                 attendanceList.set(i, updateAttendance);
                 attendanceStorage.saveAttendance(attendanceList);
                 break;
             }
         }
+        return oldAttendance;
     }
 
     public boolean hasRegisteredDate(String name) {
