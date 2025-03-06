@@ -17,4 +17,8 @@ public class MainPrinter {
     public void displayToShowAttendanceLog(String name) {
         System.out.println("이번 달 " + name + "의 출석 기록입니다.\n");
     }
+
+    public void displayAttandence(String information) {
+        System.out.println(information);
+    }
 }

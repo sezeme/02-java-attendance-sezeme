@@ -11,6 +11,7 @@ import attendance.ui.outputView.MainPrinter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class AttendanceProgram {
     private final AttendanceService attendanceService;
@@ -55,10 +56,12 @@ public class AttendanceProgram {
         String name = inputView.getNickName();
 
         ValidChecker.isRegistered(attendanceService.findAttendanceByName(name).isEmpty());
+        ValidChecker.isDuplicatedDate(attendanceService.hasRegistered(name));
 
         printer.displayToGetAttendanceTime();
-        LocalTime time = inputView.getAttendanceTime();
-        attendanceService.registerAttendance(new Attendance(name, LocalDate.now(), time));
+        Attendance attendance = new Attendance(name, LocalDate.now(), inputView.getAttendanceTime());
+        attendanceService.registerAttendance(attendance);
+        mainPrinter.displayAttandence(attendance.getInformation());
     }
 
     private void checkHasExpulsionRisk() {

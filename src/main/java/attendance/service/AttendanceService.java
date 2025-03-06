@@ -20,20 +20,11 @@ public class AttendanceService {
         return attendanceRepository.selectAttendanceByCrew(name);
     }
 
-    public boolean hasRegistered(Attendance attendance) {
-        return attendanceRepository.hasRegisteredDate(attendance);
+    public boolean hasRegistered(String name) {
+        return attendanceRepository.hasRegisteredDate(name);
     }
 
     public void registerAttendance(Attendance attendance) {
-        Attendance existingAttendance = attendanceRepository.selectAttendanceByCrewByTime(attendance);
-        if (existingAttendance == null) {
-            throw new IllegalArgumentException("[ERROR] 등록되지 않은 닉네임입니다.");
-        }
-
-        if(hasRegistered(attendance)){
-            throw new IllegalArgumentException("[ERROR] 이미 출석을 확인하였습니다. 필요한 경우 수정 기능을 이용해 주세요.");
-        }
-
         attendanceRepository.insertAttendance(attendance);
     }
 

@@ -1,12 +1,14 @@
 package attendance.domain;
 
 
+import attendance.service.utli.Formatter;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-public class Attendance implements Serializable {
+public class Attendance {
     private String nickname;
     private LocalDate date;
     private LocalTime time;
@@ -31,6 +33,10 @@ public class Attendance implements Serializable {
 
     public boolean hasRegisteredDate(Attendance a) {
         return nickname.equals(a.getNickname()) && date.equals(a.getDate());
+    }
+
+    public String getInformation() {
+        return Formatter.getDate(date) + " " + Formatter.getTime(time);
     }
 
     @Override

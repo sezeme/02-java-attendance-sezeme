@@ -2,6 +2,7 @@ package attendance.persistence;
 
 import attendance.domain.Attendance;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class AttendanceRepository {
@@ -40,7 +41,8 @@ public class AttendanceRepository {
         }
     }
 
-    public boolean hasRegisteredDate(Attendance attendance) {
+    public boolean hasRegisteredDate(String name) {
+        Attendance attendance = new Attendance(name, LocalDate.now(), null);
         for (Attendance curAttendance : attendanceList) {
             if (curAttendance.hasRegisteredDate(attendance)) return true;
         }
