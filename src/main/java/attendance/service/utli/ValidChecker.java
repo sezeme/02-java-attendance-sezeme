@@ -1,4 +1,4 @@
-package attendance.service;
+package attendance.service.utli;
 
 public class ValidChecker {
     public static void isRegistered(boolean empty) {

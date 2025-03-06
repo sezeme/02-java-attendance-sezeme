@@ -6,10 +6,10 @@ public class AttendanceUpdatePrinter extends AttendancePrinter {
     }
 
     public void displayToGetAttendanceDate() {
-        System.out.println("수정하려는 날짜(일)을 입력해 주세요.");
+        System.out.println("수정하려는 날짜(일)를 입력해 주세요.");
     }
 
     public void displayToGetAttendanceTime() {
-        System.out.println("언제로 변경하시겠습니까?");
+        System.out.println("언제로 변경하겠습니까?");
     }
 }

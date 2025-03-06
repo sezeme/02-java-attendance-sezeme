@@ -22,11 +22,16 @@ public class Attendance {
     }
 
     private AttendanceState determineAttendanceState() {
+        LocalTime startTime = switch (date.getDayOfWeek()){
+            case MONDAY -> LocalTime.of(13, 0);
+            default -> LocalTime.of(10,0);
+        };
+
         if (time == null) {
             return AttendanceState.결석;
-        } else if (time.isAfter(LocalTime.of(8,0)) && time.isBefore(LocalTime.of(10, 6))) {
+        } else if (time.isAfter(LocalTime.of(8,0)) && time.isBefore(startTime.plusMinutes(6))) {
             return AttendanceState.출석;
-        } else if (time.isAfter(LocalTime.of(10,5)) && time.isBefore(LocalTime.of(10, 31))) {
+        } else if (time.isAfter(startTime.plusMinutes(5)) && time.isBefore(LocalTime.of(10, 31))) {
             return AttendanceState.지각;
         }
         return AttendanceState.결석;

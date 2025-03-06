@@ -1,6 +1,8 @@
 package attendance.ui;
 
 
+import attendance.service.utli.InputValidator;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,11 +22,15 @@ public class InputView {
 
     public LocalTime getAttendanceTime() throws IOException {
         String[] input = br.readLine().split(":");
-        return LocalTime.of(Integer.parseInt(input[0]), Integer.parseInt(input[1]));
+        LocalTime time = LocalTime.of(Integer.parseInt(input[0]), Integer.parseInt(input[1]));
+        InputValidator.checkIsOpened(time);
+        return time;
     }
 
     public LocalDate getDateOfMonth() throws IOException {
         int input = Integer.parseInt(br.readLine());
-        return LocalDate.of(2025, 2, input);
+        LocalDate date = LocalDate.of(2025, 2, input);
+        InputValidator.checkIsOpened(date);
+        return date;
     }
 }

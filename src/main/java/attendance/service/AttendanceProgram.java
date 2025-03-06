@@ -3,8 +3,8 @@ package attendance.service;
 import attendance.domain.Attendance;
 import attendance.persistence.AttendanceRepository;
 import attendance.persistence.FileAttendanceStorage;
+import attendance.service.utli.ValidChecker;
 import attendance.ui.InputView;
-import attendance.ui.outputView.AttendancePrinter;
 import attendance.ui.outputView.AttendanceRegiserPrinter;
 import attendance.ui.outputView.AttendanceUpdatePrinter;
 import attendance.ui.outputView.MainPrinter;
@@ -12,7 +12,6 @@ import attendance.ui.outputView.MainPrinter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 public class AttendanceProgram {
     private final AttendanceService attendanceService;

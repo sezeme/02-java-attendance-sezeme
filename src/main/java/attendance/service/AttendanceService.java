@@ -2,6 +2,7 @@ package attendance.service;
 
 import attendance.domain.Attendance;
 import attendance.persistence.AttendanceRepository;
+import attendance.service.utli.ValidChecker;
 
 import java.util.List;
 
